@@ -5,19 +5,17 @@ from pathlib import Path
 import openai
 
 
-class GPTAPI:
+class GPTApi:
     def __init__(self, config_file: str = f"{Path.cwd()}/config.json"):
-        # Carregar a chave da API ao iniciar
         self.config_file = config_file
         self.openai = openai
-        
-        
+
     def login(self):
         self.api_key = self._load_api_key()
         if not self.api_key:
             self._configure_api_key()
         self.openai.api_key = self.api_key
-        
+
     def _load_api_key(self):
         """Função para carregar a chave da API a partir do arquivo de configuração."""
         if os.path.exists(self.config_file):
@@ -34,8 +32,7 @@ class GPTAPI:
             json.dump({"api_key": api_key}, f)
         self.api_key = api_key
 
-
-    def ask_llm(question):
+    def ask_llm(self, question: str):
         """Função para consultar a API do ChatGPT."""
         response = self.openai.Completion.create(
             engine="text-davinci-003", prompt=question, max_tokens=150
