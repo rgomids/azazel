@@ -1,0 +1,4 @@
+openai==1.52.1
+pillow==11.0.0
+SpeechRecognition==3.11.0
+loguru==0.7.2
