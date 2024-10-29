@@ -25,7 +25,7 @@ class Azazel:
             self.grafic.start_casting()
 
     def run(self):
-        self.speach._speak("Como posso ajudar?")
+        self.speach.speak("Como posso ajudar?")
         while True:
             question = self.speach.received_speach()
             response = self.llm.ask_llm(question)
