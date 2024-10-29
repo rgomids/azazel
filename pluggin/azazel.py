@@ -2,6 +2,7 @@ from typing import Union
 
 from consts import CONSTANTS as ct
 from helpers.builder import build_class
+from libraries.grafic import Grafic
 from libraries.llm import GPTApi, OllamaApi
 from libraries.speach import Speach
 
@@ -9,6 +10,7 @@ from libraries.speach import Speach
 class Azazel:
     def __init__(self):
         self.speach = Speach()
+        self.grafic = Grafic()
         self.llm = self._get_llm_class()
         self._prepare_images(False)
 
@@ -20,14 +22,12 @@ class Azazel:
 
     def _prepare_images(self, use_graffics: bool = True):
         if use_graffics:
-            root = tk.Tk()
-            root.withdraw()
-            load_gif()
+            self.grafic.start_casting()
 
     def run(self):
-        self.speach.activate_voice_assistant()
+        self.speach._speak("Como posso ajudar?")
         while True:
-            question = input("Você: ")
+            question = self.speach.received_speach()
             response = self.llm.ask_llm(question)
             print(f"Azazel: {response}")
             self.speach.speak(response)
