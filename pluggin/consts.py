@@ -5,4 +5,8 @@ class CONSTANTS:
         2: "Ollama",
     }
 
-    ACTIVATION_PHRASE = "Olá Azazel"
+    ACTIVATION_PHRASE = "Demonio"
+
+
+class SPEACH_C:
+    FAIL_TO_UNDERSTAND = "Não consegui entender o que você disse"
