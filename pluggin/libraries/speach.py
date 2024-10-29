@@ -8,8 +8,10 @@ from consts import SPEACH_C as sc
 class Speach:
     def __init__(self):
         self.recognizer = sr.Recognizer()
-
-    def speak(cls, text) -> None:
+        
+        
+    @staticmethod
+    def speak(text) -> None:
         """Função para converter texto em fala"""
         os.system(f'espeak "{text}"')
 
