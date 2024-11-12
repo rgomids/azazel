@@ -5,6 +5,7 @@ from sqlmodel import create_engine
 
 DEFAULT_LLM = "ollama"
 LLM_CONFIG_COLUMN = "llm model"
+DEAFULT_LANGUAGE = "pt-BR"
 
 
 class SPEACH_C:

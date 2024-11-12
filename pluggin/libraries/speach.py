@@ -1,6 +1,7 @@
 import os
 
 import speech_recognition as sr
+from consts import DEAFULT_LANGUAGE
 from consts import SPEACH_C as sc
 
 
@@ -22,7 +23,7 @@ class Speach:
     def _recognize_speech(self, audio) -> str:
         """Função para reconhecer a fala"""
         try:
-            text = self.recognizer.recognize_google(audio, language="pt-BR")
+            text = self.recognizer.recognize_google(audio, language=DEAFULT_LANGUAGE)
             print(f"Você: {text}")
             return text
         except sr.UnknownValueError:
