@@ -163,3 +163,5 @@ cython_debug/
 #.idea/
 
 azazel-voice
+
+azazel_config.db
