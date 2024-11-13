@@ -1,11 +1,10 @@
-from pathlib import Path
 from typing import Union
 
 from helpers.builder import build_class
 from libraries.grafic import Grafic
 from libraries.llm import GPTApi, OllamaApi
 from libraries.speach import Speach
-from model.configs import get_llm, start_db
+from model.configs import get_llm
 
 
 class Azazel:
@@ -33,7 +32,5 @@ class Azazel:
 
 
 if __name__ == "__main__":
-    if not (Path().cwd() / "azazel_config.db").exists():
-        start_db()
     a = Azazel()
     a.run()
