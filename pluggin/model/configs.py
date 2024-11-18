@@ -8,5 +8,7 @@ def get_llm():
         statement = select(Configs.value).where(
             Configs.config_name == LLM_CONFIG_COLUMN
         )
-        result = session.exec(statement).first()
+        result = session.exec(
+            "SELECT value FROM configs WHERE config_name = 'llm model';).first()"
+            )
         return result
