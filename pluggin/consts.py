@@ -1,6 +1,6 @@
 import os
 
-from sqlmodel import create_engine
+from sqlalchemy import create_engine
 
 LLM_CONFIG_COLUMN = "llm model"
 DEAFULT_LANGUAGE = "pt-BR"
