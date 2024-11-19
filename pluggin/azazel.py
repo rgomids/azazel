@@ -25,10 +25,10 @@ class Azazel:
     def run(self):
         self.speach.speak("Como posso ajudar?")
         while True:
-            question = self.speach.received_speach()
-            response = self.llm.ask_llm(question)
-            print(f"Azazel: {response}")
-            self.speach.speak(response)
+            if question := self.speach.received_speach():
+                response = self.llm.ask_llm(question)
+                print(f"Azazel: {response}")
+                self.speach.speak(response)
 
 
 if __name__ == "__main__":
