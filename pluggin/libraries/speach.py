@@ -1,7 +1,6 @@
 import os
 
 import speech_recognition as sr
-
 from consts import DEAFULT_LANGUAGE
 from consts import SPEACH_C as sc
 
@@ -33,7 +32,6 @@ class Speach:
     def received_speach(
         self,
         activation_phrase: str = sc.ACTIVATION_PHRASE,
-        config_header: str = cs.BASIC_HEADER_REQUEST,
     ) -> str:
         raw = self._get_raw_audio()
         command = self._recognize_speech(raw)
@@ -41,4 +39,4 @@ class Speach:
             command.lower().startswith(activation_phrase.lower())
             or activation_phrase.lower() in command.lower()
         ):
-            return config_header + "\n" * 2 + command[len(activation_phrase) :].strip()
+            return command[len(activation_phrase) :].strip()
