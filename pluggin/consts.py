@@ -9,6 +9,9 @@ DEAFULT_LANGUAGE = "pt-BR"
 class SPEACH_C:
     ACTIVATION_PHRASE = "Demonio"
     FAIL_TO_UNDERSTAND = "Não consegui entender o que você disse"
+    BASIC_HEADER_REQUEST = (
+        "Crie uma resposta curta para a pergunta abaixo, seja o mais sucinto possível"
+    )
 
 
 class DATABASE:
