@@ -32,7 +32,7 @@ class Speach:
     def received_speach(
         self,
         activation_phrase: str = sc.ACTIVATION_PHRASE,
-    ) -> str:
+    ) -> str| None:
         raw = self._get_raw_audio()
         command = self._recognize_speech(raw)
         if (
