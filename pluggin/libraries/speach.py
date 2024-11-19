@@ -1,6 +1,7 @@
 import os
 
 import speech_recognition as sr
+
 from consts import DEAFULT_LANGUAGE
 from consts import SPEACH_C as sc
 
@@ -29,11 +30,15 @@ class Speach:
         except sr.UnknownValueError:
             return sc.FAIL_TO_UNDERSTAND
 
-    def received_speach(self, activation_phrase: str = sc.ACTIVATION_PHRASE) -> str:
+    def received_speach(
+        self,
+        activation_phrase: str = sc.ACTIVATION_PHRASE,
+        config_header: str = cs.BASIC_HEADER_REQUEST,
+    ) -> str:
         raw = self._get_raw_audio()
         command = self._recognize_speech(raw)
         if (
             command.lower().startswith(activation_phrase.lower())
             or activation_phrase.lower() in command.lower()
         ):
-            return command[len(activation_phrase) :].strip()
+            return config_header + "\n" * 2 + command[len(activation_phrase) :].strip()
