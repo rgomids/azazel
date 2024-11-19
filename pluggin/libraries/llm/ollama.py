@@ -1,13 +1,14 @@
-import requests
 import json
 from pathlib import Path
+
+import requests
 
 
 class OllamaApi:
     def __init__(self, config_file: str = f"{Path.cwd()}/config.json"):
         # config_file responsable for credentials on llm
         self.config_file = config_file
-        
+
     def login(self):
         # Not implemented yet
         pass
@@ -15,13 +16,9 @@ class OllamaApi:
     def ask_llm(self, question):
 
         url = "http://localhost:8080/generate"
-        headers = {
-            "Content-Type": "application/json" 
-        }
-        
-        payload = {
-            "content": f"{question}"
-        }
+        headers = {"Content-Type": "application/json"}
+
+        payload = {"content": f"{question}"}
 
         response = requests.post(url, headers=headers, json=payload)
 
@@ -30,4 +27,4 @@ class OllamaApi:
         else:
             print(f"Erro {response.status_code}: {response.text}")
 
-        return response
+        return response.json()["responses"]
