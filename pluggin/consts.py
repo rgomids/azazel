@@ -7,7 +7,7 @@ DEAFULT_LANGUAGE = "pt-BR"
 
 
 class SPEACH_C:
-    ACTIVATION_PHRASE = "Demônio"
+    ACTIVATION_PHRASE = "Azazel"
     FAIL_TO_UNDERSTAND = "Não consegui entender o que você disse"
 
 
