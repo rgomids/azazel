@@ -1,15 +1,14 @@
 import os
 
 import speech_recognition as sr
-from consts import CONSTANTS as cs
+from consts import DEAFULT_LANGUAGE
 from consts import SPEACH_C as sc
 
 
 class Speach:
     def __init__(self):
         self.recognizer = sr.Recognizer()
-        
-        
+
     @staticmethod
     def speak(text) -> None:
         """Função para converter texto em fala"""
@@ -24,13 +23,16 @@ class Speach:
     def _recognize_speech(self, audio) -> str:
         """Função para reconhecer a fala"""
         try:
-            text = self.recognizer.recognize_google(audio, language="pt-BR")
+            text = self.recognizer.recognize_google(audio, language=DEAFULT_LANGUAGE)
             print(f"Você: {text}")
             return text
         except sr.UnknownValueError:
             return sc.FAIL_TO_UNDERSTAND
 
-    def received_speach(self, activation_phrase: str = cs.ACTIVATION_PHRASE) -> str:
+    def received_speach(
+        self,
+        activation_phrase: str = sc.ACTIVATION_PHRASE,
+    ) -> str| None:
         raw = self._get_raw_audio()
         command = self._recognize_speech(raw)
         if (

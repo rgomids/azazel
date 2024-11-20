@@ -1,10 +1,10 @@
 from typing import Union
 
-from consts import CONSTANTS as ct
 from helpers.builder import build_class
 from libraries.grafic import Grafic
 from libraries.llm import GPTApi, OllamaApi
 from libraries.speach import Speach
+from model.configs import get_llm
 
 
 class Azazel:
@@ -15,10 +15,8 @@ class Azazel:
         self._prepare_images(False)
 
     def _get_llm_class(self) -> Union[OllamaApi, GPTApi]:
-        for key, value in enumerate(ct.LLM_OPTIONS.values()):
-            print(f"{key + 1}. {value}")
-        option = int(input("Escolha uma opção: "))
-        return build_class(ct.LLM_OPTIONS[option])
+        option = get_llm()
+        return build_class(option)
 
     def _prepare_images(self, use_graffics: bool = True):
         if use_graffics:
@@ -27,10 +25,10 @@ class Azazel:
     def run(self):
         self.speach.speak("Como posso ajudar?")
         while True:
-            question = self.speach.received_speach()
-            response = self.llm.ask_llm(question)
-            print(f"Azazel: {response}")
-            self.speach.speak(response)
+            if question := self.speach.received_speach():
+                response = self.llm.ask_llm(question)
+                print(f"Azazel: {response}")
+                self.speach.speak(response)
 
 
 if __name__ == "__main__":
