@@ -5,7 +5,7 @@ import requests
 
 
 class Server:
-    def __init__(self, address: str = "http://localhost:", port: str = "8080"):
+    def __init__(self, address: str = "http://0.0.0.0:", port: str = "8080"):
         self.base_url = address + port
 
     def ask_llm(self, question: str) -> dict:
