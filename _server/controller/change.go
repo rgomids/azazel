@@ -30,13 +30,3 @@ func ServePatch(c *gin.Context) {
 	c.JSON(http.StatusOK, configs)
 
 }
-
-// Contains verifica se uma string está em um slice de strings
-func Contains(slice []string, str string) bool {
-	for _, item := range slice {
-		if item == str {
-			return true
-		}
-	}
-	return false
-}
