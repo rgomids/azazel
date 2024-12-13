@@ -1,42 +1,33 @@
 import os
 
 import speech_recognition as sr
-from consts import DEAFULT_LANGUAGE
-from consts import SPEACH_C as sc
+from libraries.base.audio import Audio
+from consts import AZAZEL_STONE
 
 
-class Speach:
-    def __init__(self):
+class Speach(Audio):
+    def __init__(self, output_file=f"{AZAZEL_STONE.TEMP}/output.wav"):
         self.recognizer = sr.Recognizer()
+        super().__init__(output_file)
 
     @staticmethod
     def speak(text) -> None:
         """Função para converter texto em fala"""
         os.system(f'espeak "{text}"')
 
-    def _get_raw_audio(self):
-        with sr.Microphone() as source:
-            self.recognizer.adjust_for_ambient_noise(source)
-            print("Azazel está ouvindo...")
-            return self.recognizer.listen(source)
+    def transcribe_audio(self):
+        with sr.AudioFile(self.output_file) as source:
+            print("Carregando áudio...")
+            audio_data = self.recognizer.record(source)
 
-    def _recognize_speech(self, audio) -> str:
-        """Função para reconhecer a fala"""
         try:
-            text = self.recognizer.recognize_google(audio, language=DEAFULT_LANGUAGE)
-            print(f"Você: {text}")
+            print("Transcrevendo áudio...")
+            text = self.recognizer.recognize_google(audio_data, language="pt-BR")
+            print("Transcrição concluída!")
             return text
         except sr.UnknownValueError:
-            return sc.FAIL_TO_UNDERSTAND
-
-    def received_speach(
-        self,
-        activation_phrase: str = sc.ACTIVATION_PHRASE,
-    ) -> str| None:
-        raw = self._get_raw_audio()
-        command = self._recognize_speech(raw)
-        if (
-            command.lower().startswith(activation_phrase.lower())
-            or activation_phrase.lower() in command.lower()
-        ):
-            return command[len(activation_phrase) :].strip()
+            print("O áudio não pôde ser entendido.")
+            return None
+        except sr.RequestError as e:
+            print(f"Erro ao acessar o serviço de reconhecimento: {e}")
+            return None

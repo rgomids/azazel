@@ -1,36 +1,41 @@
+from threading import Thread
 from typing import Union
 
-from helpers.builder import build_class
+import gi
 from libraries.grafic import Grafic
-from libraries.llm import GPTApi, OllamaApi
+from libraries.server import Server
 from libraries.speach import Speach
-from model.configs import get_llm
+from consts import AZAZEL_STONE
+
+from libraries.base.plugin import Plugin
+
+gi.require_version("Gtk", "3.0")
+gi.require_version("AppIndicator3", "0.1")
 
 
-class Azazel:
+class Azazel(Plugin):
     def __init__(self):
+
         self.speach = Speach()
         self.grafic = Grafic()
-        self.llm = self._get_llm_class()
-        self._prepare_images(False)
+        self.server = Server()
+        self.server.change_llm(AZAZEL_STONE.LLM_OPTIONS[0])
+        super().__init__()
 
-    def _get_llm_class(self) -> Union[OllamaApi, GPTApi]:
-        option = get_llm()
-        return build_class(option)
+    def on_record_toggle(self, _):
+        print("Iniciando a gravação...")
+        if not self.speach.is_recording:
+            self.speach.start_recording()
+        else:
+            self.speach.stop_recording()
+            text = self.speach.transcribe_audio()
+            response = self.server.ask_llm(text)
+            self.speach.speak(response)
 
-    def _prepare_images(self, use_graffics: bool = True):
-        if use_graffics:
-            self.grafic.start_casting()
-
-    def run(self):
-        self.speach.speak("Como posso ajudar?")
-        while True:
-            if question := self.speach.received_speach():
-                response = self.llm.ask_llm(question)
-                print(f"Azazel: {response}")
-                self.speach.speak(response)
+    def on_option_toggled(self, widget):
+        if widget.get_active():
+            self.server.change_llm(widget.get_label())
 
 
 if __name__ == "__main__":
     a = Azazel()
-    a.run()
