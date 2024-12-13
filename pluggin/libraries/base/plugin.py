@@ -13,7 +13,7 @@ class Plugin:
     def __init__(self):
         self.indicator = AppIndicator3.Indicator.new(
             "Azazel",
-            f"{AZAZEL_STONE.FOLDER}/7V7.gif",
+            f"{AZAZEL_STONE.IMAGES}/7V7.gif",
             AppIndicator3.IndicatorCategory.APPLICATION_STATUS,
         )
         self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
