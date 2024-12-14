@@ -11,7 +11,7 @@ class Audio:
     def __init__(self, output_file=AZAZEL_STONE.OUTPUT_FILE):
         self.is_recording = False
         self.recognizer = sr.Recognizer()
-        self.output_file = output_file
+        self.output_file = str(output_file)
         self.format = pyaudio.paInt16
         self.channels = 1
         self.rate = 44100

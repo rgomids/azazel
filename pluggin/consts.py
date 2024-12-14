@@ -6,7 +6,7 @@ class AZAZEL_STONE:
     DEAFULT_LANGUAGE = "pt-BR"
     FOLDER = Path().cwd()
     TEMP = FOLDER / "temp"
-    OUTPUT_FILE = TEMP / "output.wav"
+    OUTPUT_FILE = Path(f"{TEMP}/output.wav")
     IMAGES = FOLDER / "images"
     ACTIVATION_PHRASE = "Azazel"
     FAIL_TO_UNDERSTAND = "Não consegui entender o que você disse"
