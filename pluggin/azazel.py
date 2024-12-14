@@ -93,7 +93,6 @@ class Azazel:
     def reload_sidebar(self):
         self.menu.destroy()
         self._make_sidebar()
-        self.on_start()
 
     def on_quit(self):
         Gtk.main_quit()
