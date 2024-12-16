@@ -109,14 +109,13 @@ class Azazel:
             self.reload_sidebar()
             self.audio.start_recording()
         else:
+            self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/7V7.gif")
             self.switch_record_state()
             self.audio.stop_recording()
-            self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/7V7.gif")
             self.reload_sidebar()
             text = self.audio.transcribe_audio()
             response = self.server.ask_llm(text)
             self.audio.speak(response)
-        pass
 
     def on_option_toggled(self, widget):
         if widget.get_active():
