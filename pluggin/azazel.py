@@ -1,3 +1,5 @@
+import os
+
 import gi
 from consts import AZAZEL_STONE
 
@@ -94,9 +96,9 @@ class Azazel:
         self.menu.destroy()
         self._make_sidebar()
 
-    def on_quit(self):
+    def on_quit(self, _):
         Gtk.main_quit()
-        # TODO: parar tbmm o servidor go e fechar o programa
+        os._exit(0)
 
     def on_start(self):
         Gtk.main()
