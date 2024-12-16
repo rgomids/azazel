@@ -56,7 +56,7 @@ The server will be running on the default address (http://0.0.0.0:8080), or you 
 
 2.Run the plugin using it`s default command line "azazel":
     ```bash
-    azazel
+   azazel
 
 This will add the icon to the top bar of your Ubuntu system. You can now use it to interact with the Go server.
 
