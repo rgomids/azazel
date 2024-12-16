@@ -9,5 +9,9 @@ class AZAZEL_STONE:
     OUTPUT_FILE = Path(f"{TEMP}/output.wav")
     IMAGES = FOLDER / "images"
     ACTIVATION_PHRASE = "Azazel"
-    FAIL_TO_UNDERSTAND = "Não consegui entender o que você disse"
     LLM_OPTIONS = ["Ollama Server", "GPT-4"]
+    EGO = """ *** Answer as briefly as possible, without writing titles 
+    or labels, in a way that doesn't sound like an AI response, but 
+    rather how a grumpy man in his 40s would answer. Everything must
+    be answered in English. If code is needed, leave it at the end of
+    the 40s-style answer and separate it with "__code__" !!! *** """

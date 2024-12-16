@@ -11,7 +11,7 @@ class Server:
     def ask_llm(self, question: str) -> dict:
         url = f"{self.base_url}/generate"
         headers = {"Content-Type": "application/json"}
-        payload = {"content": f"{question} *** responda de forma sucinta!!! ***"}
+        payload = {"content": f"{question}{AZAZEL_STONE.EGO}"}
 
         response = requests.post(url, headers=headers, json=payload)
 
