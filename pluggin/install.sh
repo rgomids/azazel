@@ -6,6 +6,8 @@ INSTALL_DIR="/opt/$APP_NAME"
 VENV_DIR="$INSTALL_DIR/venv"
 ENTRY_SCRIPT="$INSTALL_DIR/$APP_NAME.py"
 PROFILE_FILE="$HOME/.bashrc"
+TEMP="/"var/tmp""
+OUTPUT_FILE="$TEMP/output.wav"
 
 # Function to check if a command exists
 command_exists() {
@@ -29,6 +31,7 @@ python3 -m venv "$VENV_DIR"
 # Activate the virtual environment and install dependencies
 echo "Installing dependencies in the virtual environment..."
 source "$VENV_DIR/bin/activate"
+touch $OUTPUT_FILE
 pip3 install -r "$INSTALL_DIR/requirements.txt"
 deactivate
 
