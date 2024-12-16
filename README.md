@@ -34,10 +34,10 @@ The plugin facilitates easy interaction with the Go server, providing a smooth u
 ## Requirements
 
 ### Go Server
-- Go (version 1.XX or higher)
+- Go (version 1.22.2 or higher)
 
 ### Python Plugin
-- Python 3.x
+- Python 3.12
 
 ## Setup
 
