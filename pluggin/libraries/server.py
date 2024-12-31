@@ -1,5 +1,6 @@
 import requests
 from consts import AZAZEL_STONE
+from utils.handle_server import handle_response
 
 
 class Server:
@@ -8,6 +9,7 @@ class Server:
         # Seta no srv a opcao do plugin
         self.change_llm(AZAZEL_STONE.LLM_OPTIONS[0])
 
+    @handle_response
     def ask_llm(self, question: str) -> dict:
         url = f"{self.base_url}/generate"
         headers = {"Content-Type": "application/json"}
@@ -15,13 +17,9 @@ class Server:
 
         response = requests.post(url, headers=headers, json=payload)
 
-        if response.status_code == 200:
-            print("Resposta:", response.json())
-        else:
-            print(f"Erro {response.status_code}: {response.text}")
+        return response
 
-        return response.json()["responses"]
-
+    @handle_response
     def change_llm(self, llm_option):
         url = f"{self.base_url}/change"
         headers = {"Content-Type": "application/json"}
@@ -29,16 +27,11 @@ class Server:
 
         response = requests.patch(url, headers=headers, json=payload)
 
-        if response.status_code == 200:
-            print("Resposta:", response.json())
-        else:
-            print(f"Erro {response.status_code}: {response.text}")
+        return response
 
+    @handle_response
     def get_info(self):
         url = f"{self.base_url}/info"
         response = requests.get(url)
 
-        if response.status_code == 200:
-            print("Resposta:", response.json())
-        else:
-            print(f"Erro {response.status_code}: {response.text}")
+        return response
