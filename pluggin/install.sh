@@ -9,10 +9,19 @@ PROFILE_FILE="$HOME/.bashrc"
 TEMP="/"var/tmp""
 OUTPUT_FILE="$TEMP/output.wav"
 
-# Function to check if a command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
+USE_VOICE="False"
+
+# Processar todos os argumentos
+for arg in "$@"; do
+    case $arg in
+        --use-voice|-v) USE_VOICE="True" ;;
+        # caso precise de mais um padrao, adicione abaixo. Ex abaixo  
+        # --enable-debug|-u) ENABLE_DEBUG="true" ;;
+        *) echo "Unknow Parameter: $arg"; exit 1 ;;
+    esac
+done
+
+export USE_VOICE
 
 # Install necessary packages
 echo "Installing required packages..."

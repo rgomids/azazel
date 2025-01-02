@@ -38,22 +38,32 @@ class Azazel(Grafic):
     def on_record_toggle(self, _):
         print("Iniciando a gravação...")
         if not self.is_recording:
-            self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/listening.gif")
-            self.switch_record_state()
-            self.reload_sidebar()
-            self.audio.start_recording()
+            self.start_recording()
         else:
-            self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/7V7.gif")
-            self.switch_record_state()
-            self.audio.stop_recording()
-            self.reload_sidebar()
-            text = self.audio.transcribe_audio()
-            response = self.server.ask_llm(text)
-            self.audio.speak(response)
+            self.stop_recording()
+            self.create_anwser()
 
     def on_option_toggled(self, widget):
         if widget.get_active():
             self.server.change_llm(widget.get_label())
+
+    def start_recording(self):
+        self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/listening.gif")
+        self.switch_record_state()
+        self.reload_sidebar()
+        self.audio.start_recording()
+
+    def stop_recording(self):
+        self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/7V7.gif")
+        self.switch_record_state()
+        self.audio.stop_recording()
+        self.reload_sidebar()
+
+    def create_anwser(self):
+        text = self.audio.transcribe_audio()
+        response = self.server.ask_llm(text)
+        if AZAZEL_STONE.USE_VOICE:
+            self.audio.speak(response)
 
     def switch_record_state(self):
         if self.is_recording:

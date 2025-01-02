@@ -6,6 +6,7 @@ class AZAZEL_STONE:
     DEAFULT_LANGUAGE = "pt-BR"
     FOLDER = Path().cwd()
     TEMP = "/var/tmp"
+    USE_VOICE = os.environ.get("USE_VOICE")
     PLUGGIN_PATH = FOLDER / "pluggin"
     OUTPUT_FILE = Path(f"{TEMP}/output.wav")
     IMAGES = PLUGGIN_PATH / "images"
