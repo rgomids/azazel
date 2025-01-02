@@ -1,5 +1,4 @@
 from consts import AZAZEL_STONE
-
 from gi.repository import Gtk
 
 
@@ -7,18 +6,18 @@ class Grafic:
     def __init__(self):
         self.create_menu()
         self.is_recording = False
-        
+
     def create_menu(self):
         self.menu = Gtk.Menu()
-        
+
     def destroy_menu(self):
         self.menu.destroy()
-        
+
     def reload_sidebar(self):
         self.destroy_menu()
         self.create_menu()
         self._make_sidebar()
-        
+
     def _make_sidebar(self):
         if not self.is_recording:
             radio_item = self._make_llm_list()
