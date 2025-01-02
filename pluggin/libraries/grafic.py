@@ -1,41 +1,98 @@
-import os
-import tkinter as tk
+from consts import AZAZEL_STONE
 
-from PIL import Image, ImageSequence, ImageTk
+from gi.repository import Gtk
 
 
 class Grafic:
-
     def __init__(self):
-        self.root = tk.Tk()
-        self.root.withdraw()
+        self.create_menu()
+        self.is_recording = False
+        
+    def create_menu(self):
+        self.menu = Gtk.Menu()
+        
+    def destroy_menu(self):
+        self.menu.destroy()
+        
+    def reload_sidebar(self):
+        self.destroy_menu()
+        self.create_menu()
+        self._make_sidebar()
+        
+    def _make_sidebar(self):
+        if not self.is_recording:
+            radio_item = self._make_llm_list()
+            for item in radio_item:
+                self.menu.append(item)
 
-    def show_listening_gif(self):
-        global gif_label, gif_frames
-        gif_label.pack()
-        gif_label.lift()
-        self.animate_gif(0)
+            separator = self._make_separator()
+            self.menu.append(separator)
 
-    def hide_listening_gif():
-        global gif_label
-        gif_label.pack_forget()
+        record_button = self._make_record_button()
+        self.menu.append(record_button)
 
-    def animate_gif(frame_index):
-        global gif_label, gif_frames
-        gif_label.config(image=gif_frames[frame_index])
-        frame_index = (frame_index + 1) % len(gif_frames)
-        # if gif_label.winfo_ismapped():
-        #     gif_label.after(50, animate_gif, frame_index)
+        separator = self._make_separator()
+        self.menu.append(separator)
 
-    def load_gif():
-        global gif_frames, gif_label
-        gif_path = os.path.expanduser("./listening.gif")
-        gif = Image.open(gif_path)
-        gif_frames = [
-            ImageTk.PhotoImage(frame.copy().convert("RGBA"))
-            for frame in ImageSequence.Iterator(gif)
-        ]
-        gif_label = tk.Label(image=gif_frames[0], bg="white")
+        # Item de sair
+        if not self.is_recording:
+            quit_item = self._make_quit_button()
+            self.menu.append(quit_item)
 
-    def start_casting(self):
-        self.load_gif()
+        self.menu.show_all()
+
+    def _make_llm_list(self):
+        radio_group = []
+        first_option = None
+        for index, option_label in enumerate(AZAZEL_STONE.LLM_OPTIONS):
+            if index == 0:
+                radio_item = Gtk.RadioMenuItem.new_with_label(None, option_label)
+                first_option = radio_item
+            else:
+                radio_item = Gtk.RadioMenuItem.new_with_label_from_widget(
+                    first_option, option_label
+                )
+
+            radio_item.connect("toggled", self.on_option_toggled)
+            radio_group.append(radio_item)
+        return radio_group
+
+    def _make_separator(self):
+        separator = Gtk.SeparatorMenuItem()
+        return separator
+
+    def _make_record_button(self):
+        # Botão de gravar/parar
+        record_item = Gtk.MenuItem.new()
+        record_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.record_icon = Gtk.Image.new_from_icon_name(
+            "microphone-sensitivity-high", Gtk.IconSize.MENU
+        )
+        label = "Start Recording" if not self.is_recording else "Stop Recording"
+
+        self.record_label = Gtk.Label(label=label)
+        record_box.pack_start(self.record_icon, False, False, 0)
+        record_box.pack_start(self.record_label, False, False, 5)
+        record_item.add(record_box)
+        record_item.connect("activate", self.on_record_toggle)
+        return record_item
+
+    def _make_quit_button(self):
+        quit_item = Gtk.MenuItem.new_with_label("Quit")
+        quit_item.connect("activate", self.on_quit)
+        return quit_item
+
+    def on_record_toggle(self, _):
+        pass
+
+    def on_record_toggle(self, _):
+        pass
+
+    def on_option_toggled(self, _):
+        pass
+
+    def on_quit(self, _):
+        Gtk.main_quit()
+
+    def on_start(self):
+        Gtk.main()

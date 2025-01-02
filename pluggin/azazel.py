@@ -1,34 +1,71 @@
-from typing import Union
+import os
 
-from helpers.builder import build_class
+import gi
+from consts import AZAZEL_STONE
+
+gi.require_version("Gtk", "3.0")
+gi.require_version("AppIndicator3", "0.1")
+
+
+from consts import AZAZEL_STONE
+from gi.repository import AppIndicator3
+from libraries.audio import Audio
 from libraries.grafic import Grafic
-from libraries.llm import GPTApi, OllamaApi
-from libraries.speach import Speach
-from model.configs import get_llm
+from libraries.server import Server
 
 
-class Azazel:
+class Azazel(Grafic):
     def __init__(self):
-        self.speach = Speach()
-        self.grafic = Grafic()
-        self.llm = self._get_llm_class()
-        self._prepare_images(False)
+        super().__init__()
+        self.audio = Audio()
+        self.server = Server()
 
-    def _get_llm_class(self) -> Union[OllamaApi, GPTApi]:
-        option = get_llm()
-        return build_class(option)
+        self.indicator = AppIndicator3.Indicator.new(
+            "Azazel",
+            f"{AZAZEL_STONE.IMAGES}/7V7.gif",
+            AppIndicator3.IndicatorCategory.APPLICATION_STATUS,
+        )
+        self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 
-    def _prepare_images(self, use_graffics: bool = True):
-        if use_graffics:
-            self.grafic.start_casting()
+    def _make_sidebar(self):
+        super()._make_sidebar()
+        self.indicator.set_menu(self.menu)
+
+    def on_quit(self, _):
+        super().on_quit()
+        os._exit(0)
+
+    def on_record_toggle(self, _):
+        print("Iniciando a gravação...")
+        if not self.is_recording:
+            self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/listening.gif")
+            self.switch_record_state()
+            self.reload_sidebar()
+            self.audio.start_recording()
+        else:
+            self.indicator.set_icon(f"{AZAZEL_STONE.IMAGES}/7V7.gif")
+            self.switch_record_state()
+            self.audio.stop_recording()
+            self.reload_sidebar()
+            text = self.audio.transcribe_audio()
+            response = self.server.ask_llm(text)
+            self.audio.speak(response)
+
+    def on_option_toggled(self, widget):
+        if widget.get_active():
+            self.server.change_llm(widget.get_label())
+
+    def switch_record_state(self):
+        if self.is_recording:
+            self.audio.is_recording = False
+            self.is_recording = False
+        else:
+            self.audio.is_recording = True
+            self.is_recording = True
 
     def run(self):
-        self.speach.speak("Como posso ajudar?")
-        while True:
-            if question := self.speach.received_speach():
-                response = self.llm.ask_llm(question)
-                print(f"Azazel: {response}")
-                self.speach.speak(response)
+        self._make_sidebar()
+        self.on_start()
 
 
 if __name__ == "__main__":
