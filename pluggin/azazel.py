@@ -8,7 +8,7 @@ gi.require_version("AppIndicator3", "0.1")
 
 
 from consts import AZAZEL_STONE
-from gi.repository import AppIndicator3, Gtk
+from gi.repository import AppIndicator3
 from libraries.audio import Audio
 from libraries.grafic import Grafic
 from libraries.server import Server
@@ -16,10 +16,10 @@ from libraries.server import Server
 
 class Azazel(Grafic):
     def __init__(self):
+        super().__init__()
         self.audio = Audio()
         self.server = Server()
 
-        self.is_recording = False
         self.indicator = AppIndicator3.Indicator.new(
             "Azazel",
             f"{AZAZEL_STONE.IMAGES}/7V7.gif",
@@ -28,33 +28,8 @@ class Azazel(Grafic):
         self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 
     def _make_sidebar(self):
-        self.menu = Gtk.Menu()
-        if not self.is_recording:
-            radio_item = self._make_llm_list()
-            for item in radio_item:
-                self.menu.append(item)
-
-            separator = self._make_separator()
-            self.menu.append(separator)
-
-        record_button = self._make_record_button()
-        self.menu.append(record_button)
-
-        separator = self._make_separator()
-        self.menu.append(separator)
-
-        # Item de sair
-        if not self.is_recording:
-            quit_item = self._make_quit_button()
-            self.menu.append(quit_item)
-
-        self.menu.show_all()
-
+        super()._make_sidebar()
         self.indicator.set_menu(self.menu)
-
-    def reload_sidebar(self):
-        self.menu.destroy()
-        self._make_sidebar()
 
     def on_quit(self, _):
         super().on_quit()

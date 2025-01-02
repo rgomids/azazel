@@ -4,6 +4,43 @@ from gi.repository import Gtk
 
 
 class Grafic:
+    def __init__(self):
+        self.create_menu()
+        self.is_recording = False
+        
+    def create_menu(self):
+        self.menu = Gtk.Menu()
+        
+    def destroy_menu(self):
+        self.menu.destroy()
+        
+    def reload_sidebar(self):
+        self.destroy_menu()
+        self.create_menu()
+        self._make_sidebar()
+        
+    def _make_sidebar(self):
+        if not self.is_recording:
+            radio_item = self._make_llm_list()
+            for item in radio_item:
+                self.menu.append(item)
+
+            separator = self._make_separator()
+            self.menu.append(separator)
+
+        record_button = self._make_record_button()
+        self.menu.append(record_button)
+
+        separator = self._make_separator()
+        self.menu.append(separator)
+
+        # Item de sair
+        if not self.is_recording:
+            quit_item = self._make_quit_button()
+            self.menu.append(quit_item)
+
+        self.menu.show_all()
+
     def _make_llm_list(self):
         radio_group = []
         first_option = None
