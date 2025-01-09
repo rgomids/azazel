@@ -27,6 +27,14 @@ func ServePatch(c *gin.Context) {
 		return
 	}
 	database.DB.Model(&configs).UpdateColumns(configs)
-	c.JSON(http.StatusOK, configs)
+
+	response := gin.H{
+		"response":   "Ok",
+		"ID":         configs.ID,
+		"ConfigName": configs.ConfigName,
+		"Value":      configs.Value,
+	}
+
+	c.JSON(http.StatusOK, response)
 
 }
