@@ -11,6 +11,7 @@ func ServeRoutes() {
 
 	router.POST("/generate", controller.ServeGenerate)
 	router.GET("/info", controller.ServeInfo)
+	router.GET("/options", controller.ServeConfigs)
 	router.PATCH("/change", controller.ServePatch)
 
 	router.Run("0.0.0.0:8080")
