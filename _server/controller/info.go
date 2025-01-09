@@ -1,6 +1,7 @@
 package controller
 
 import (
+	consts "azazel/cmd"
 	"azazel/database"
 	"azazel/models"
 	"log"
@@ -9,15 +10,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ServeInfo(c *gin.Context) {
-
+func ServeConfigs(c *gin.Context) {
 	var configNames []string
 	if err := database.DB.Model(&models.Configs{}).Pluck("config_name", &configNames).Error; err != nil {
 		log.Fatalf("Erro ao buscar os nomes das configurações: %v", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"Fields": configNames,
+		"Response": "Ok",
+		"Fields":   configNames,
+	})
+}
+
+func ServeInfo(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"response": "OK",
+		"LLM's":    consts.ImplementedLLMs,
 	})
 }
