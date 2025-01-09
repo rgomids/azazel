@@ -1,11 +1,13 @@
 from consts import AZAZEL_STONE
 from gi.repository import Gtk
-
+from utils.historic import clean_historic, get_history
+import os
 
 class Grafic:
     def __init__(self):
         self.create_menu()
         self.is_recording = False
+        clean_historic()
 
     def create_menu(self):
         self.menu = Gtk.Menu()
@@ -30,6 +32,11 @@ class Grafic:
         record_button = self._make_record_button()
         self.menu.append(record_button)
 
+        if not self.is_recording:
+            # Botão para abrir janela
+            open_window_button = self._make_open_window_button()
+            self.menu.append(open_window_button)
+
         separator = self._make_separator()
         self.menu.append(separator)
 
@@ -39,6 +46,11 @@ class Grafic:
             self.menu.append(quit_item)
 
         self.menu.show_all()
+
+    def _make_open_window_button(self):
+        open_window_item = Gtk.MenuItem.new_with_label("Open History")
+        open_window_item.connect("activate", self.on_open_window)
+        return open_window_item
 
     def _make_llm_list(self):
         radio_group = []
@@ -81,6 +93,30 @@ class Grafic:
         quit_item.connect("activate", self.on_quit)
         return quit_item
 
+    def on_open_window(self, _):
+        new_window = Gtk.Window(title="History")
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        for line in get_history():
+            text = " ".join(line)
+
+            # Cria um TextView
+            text_view = Gtk.TextView()
+            text_view.set_wrap_mode(Gtk.WrapMode.WORD)
+            text_view.set_editable(False)
+            text_view.set_cursor_visible(False)
+            text_view.set_left_margin(10)
+
+            buffer = text_view.get_buffer()
+            buffer.set_text(text)
+
+            box.pack_start(text_view, False, False, 0)
+
+        new_window.add(box)
+        new_window.set_default_size(500, 600)
+        new_window.queue_draw()
+        new_window.show_all()
+
     def on_record_toggle(self, _):
         pass
 
@@ -92,6 +128,7 @@ class Grafic:
 
     def on_quit(self, _):
         Gtk.main_quit()
+        os._exit(0)
 
     def on_start(self):
         Gtk.main()

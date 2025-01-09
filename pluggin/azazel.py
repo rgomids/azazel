@@ -1,17 +1,15 @@
-import os
-
 import gi
 from consts import AZAZEL_STONE
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("AppIndicator3", "0.1")
 
-
 from consts import AZAZEL_STONE
 from gi.repository import AppIndicator3
 from libraries.audio import Audio
 from libraries.grafic import Grafic
 from libraries.server import Server
+from utils.historic import set_on_history
 
 
 class Azazel(Grafic):
@@ -31,17 +29,13 @@ class Azazel(Grafic):
         super()._make_sidebar()
         self.indicator.set_menu(self.menu)
 
-    def on_quit(self, _):
-        super().on_quit()
-        os._exit(0)
-
     def on_record_toggle(self, _):
         print("Iniciando a gravação...")
         if not self.is_recording:
             self.start_recording()
         else:
             self.stop_recording()
-            self.create_anwser()
+            self.create_response()
 
     def on_option_toggled(self, widget):
         if widget.get_active():
@@ -59,11 +53,11 @@ class Azazel(Grafic):
         self.audio.stop_recording()
         self.reload_sidebar()
 
-    def create_anwser(self):
+    def create_response(self):
         text = self.audio.transcribe_audio()
-        response = self.server.ask_llm(text)
-        if AZAZEL_STONE.USE_VOICE:
-            self.audio.speak(response)
+        set_on_history("You", text)
+        response = self.create_anwser(text)
+        set_on_history("Azazel", response)
 
     def switch_record_state(self):
         if self.is_recording:

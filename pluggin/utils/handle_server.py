@@ -13,7 +13,8 @@ def handle_response(func):
             response = func(*args, **kwargs)
             response.raise_for_status()
 
-            if response.json()["response"] != "Ok":
+            data = response.json()
+            if data["response"] != "Ok":
                 raise InvalidResponseError(
                     f"Response field indicates failure: {data['response']}"
                 )
