@@ -17,7 +17,7 @@ The Go server is responsible for handling requests related to language models an
 
 ### Part 2: Python Plugin
 
-The Python plugin is designed to run on Ubuntu and adds an icon to the system's top bar. This plugin allows you to:
+The Python plugin is designed to run on Ubuntu and Gnome and adds an icon to the system's top bar. This plugin allows you to:
 
 - Send requests to the Go server and receive responses.
 - Start a recording session, where your voice will be recorded and sent directly to the Go server for processing.
@@ -27,17 +27,31 @@ The plugin facilitates easy interaction with the Go server, providing a smooth u
 
 ## Features
 
-- **Language Model Control**: Easily query language models like GPT-4 or Ollama.
+- **Language Model Control**: Easily query language models.
 - **Audio Responses**: Record and receive responses in audio form directly from the server.
 - **System Tray Integration**: The Python plugin adds a convenient icon to your system's top bar for quick access.
 
 ## Requirements
 
-### Go Server
-- Go (version 1.22.2 or higher)
+### System Requirements
+- Python 3.12.3
+- pip 24.0
+- espeak
+- portaudio19-dev
+- python3-pyaudio
 
 ### Python Plugin
-- Python 3.12
+- openai==1.52.1
+- pillow==11.0.0
+- SpeechRecognition==3.11.0
+- loguru==0.7.2
+- PyGObject==3.50.0
+- requests==2.32.3
+- python-dotenv==1.0.1
+- PyAudio==0.2.14
+
+### Go Server
+- Go (version 1.22.2 or higher)
 
 ## Setup
 
@@ -46,6 +60,7 @@ The plugin facilitates easy interaction with the Go server, providing a smooth u
 1. To run the Go server, simply use Docker:
    ```bash
    docker-compose up -d
+   ```
 
 The server will be running on the default address (http://0.0.0.0:8080), or you can modify the address and port as needed.
 
@@ -53,14 +68,14 @@ The server will be running on the default address (http://0.0.0.0:8080), or you 
 1. Install the plugin by running the install.sh script located in the ./plugin directory:
    ```bash
    ./plugin/install.sh
+   ```
 
 2.Run the plugin using it`s default command line "azazel":
-    ```bash
+   ```bash
    azazel
+   ```
 
 This will add the icon to the top bar of your Ubuntu system. You can now use it to interact with the Go server.
-
-
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
