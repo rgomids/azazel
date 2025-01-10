@@ -18,15 +18,16 @@ func ServePatch(c *gin.Context) {
 		return
 	}
 
-	database.DB.Where(&models.Configs{ConfigName: configs.ConfigName}).First(&configs)
-
-	if configs.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Config not found!",
+	if err := configs.UpdateConfig(database.DB); err != nil {
+		status := http.StatusInternalServerError
+		if err.Error() == "config not found" {
+			status = http.StatusNotFound
+		}
+		c.JSON(status, gin.H{
+			"error": err.Error(),
 		})
 		return
 	}
-	database.DB.Model(&configs).UpdateColumns(configs)
 
 	response := gin.H{
 		"response":   "Ok",
