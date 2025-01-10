@@ -3,7 +3,6 @@ package controller
 import (
 	"azazel/database"
 	"azazel/models"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,9 +11,10 @@ import (
 var ImplementedLLMs = []string{"Ollama Server", "GPT-4"}
 
 func HandleConfigList(c *gin.Context) {
-	var configNames []string
-	if err := database.DB.Model(&models.Configs{}).Pluck("config_name", &configNames).Error; err != nil {
-		log.Fatalf("Erro ao buscar os nomes das configurações: %v", err)
+	var configs models.Configs
+
+	configNames, err := configs.ListConfigNames(database.DB)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

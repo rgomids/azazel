@@ -31,3 +31,11 @@ func (c *Configs) UpdateConfig(db *gorm.DB) error {
 
 	return nil
 }
+
+func (c *Configs) ListConfigNames(db *gorm.DB) ([]string, error) {
+	var configNames []string
+	if err := db.Model(&Configs{}).Pluck("config_name", &configNames).Error; err != nil {
+		return nil, err
+	}
+	return configNames, nil
+}

@@ -15,5 +15,4 @@ func ServeRoutes() {
 	router.PATCH("/update", controller.HandleConfigUpdate)
 
 	router.Run("0.0.0.0:8080")
-
 }
