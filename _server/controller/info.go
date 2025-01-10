@@ -1,7 +1,6 @@
 package controller
 
 import (
-	consts "azazel/cmd"
 	"azazel/database"
 	"azazel/models"
 	"log"
@@ -9,6 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+var ImplementedLLMs = []string{"Ollama Server", "GPT-4"}
 
 func ServeConfigs(c *gin.Context) {
 	var configNames []string
@@ -27,6 +28,6 @@ func ServeConfigs(c *gin.Context) {
 func ServeInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"response": "OK",
-		"LLM's":    consts.ImplementedLLMs,
+		"LLM's":    ImplementedLLMs,
 	})
 }

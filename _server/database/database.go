@@ -1,12 +1,17 @@
 package database
 
 import (
-	consts "azazel/cmd"
 	"azazel/models"
 	"log"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+)
+
+const (
+	DBPath          = "azazel.db"
+	LLMConfigColumn = "llm_model"
+	DefaultLLM      = "ollama"
 )
 
 var (
@@ -15,10 +20,10 @@ var (
 )
 
 func SolveDatabase() {
-	DB, err = gorm.Open(sqlite.Open(consts.DBPath))
+	DB, err = gorm.Open(sqlite.Open(DBPath))
 	if err != nil {
 		log.Panic("Erro ao conectar com banco de dados")
 	}
 	DB.AutoMigrate(&models.Configs{})
-	DB.FirstOrCreate(&models.Configs{ConfigName: consts.LLMConfigColumn}, &models.Configs{Value: consts.DefaultLLM})
+	DB.FirstOrCreate(&models.Configs{ConfigName: LLMConfigColumn}, &models.Configs{Value: DefaultLLM})
 }
