@@ -11,7 +11,7 @@ import (
 
 var ImplementedLLMs = []string{"Ollama Server", "GPT-4"}
 
-func ServeConfigs(c *gin.Context) {
+func HandleConfigList(c *gin.Context) {
 	var configNames []string
 	if err := database.DB.Model(&models.Configs{}).Pluck("config_name", &configNames).Error; err != nil {
 		log.Fatalf("Erro ao buscar os nomes das configurações: %v", err)
@@ -25,7 +25,7 @@ func ServeConfigs(c *gin.Context) {
 	})
 }
 
-func ServeInfo(c *gin.Context) {
+func HandleServices(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"response": "OK",
 		"LLM's":    ImplementedLLMs,

@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	DBPath          = "azazel.db"
-	LLMConfigColumn = "llm_model"
-	DefaultLLM      = "ollama"
+	dbPath     = "azazel.db"
+	llmColumn  = "llm_model"
+	defaultLlm = "ollama"
 )
 
 var (
@@ -20,10 +20,10 @@ var (
 )
 
 func SolveDatabase() {
-	DB, err = gorm.Open(sqlite.Open(DBPath))
+	DB, err = gorm.Open(sqlite.Open(dbPath))
 	if err != nil {
 		log.Panic("Erro ao conectar com banco de dados")
 	}
 	DB.AutoMigrate(&models.Configs{})
-	DB.FirstOrCreate(&models.Configs{ConfigName: LLMConfigColumn}, &models.Configs{Value: DefaultLLM})
+	DB.FirstOrCreate(&models.Configs{ConfigName: llmColumn}, &models.Configs{Value: defaultLlm})
 }

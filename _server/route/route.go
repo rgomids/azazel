@@ -9,10 +9,10 @@ import (
 func ServeRoutes() {
 	router := gin.Default()
 
-	router.POST("/generate", controller.ServeGenerate)
-	router.GET("/info", controller.ServeInfo)
-	router.GET("/options", controller.ServeConfigs)
-	router.PATCH("/change", controller.ServePatch)
+	router.POST("/generate", controller.HandleGeneration)
+	router.GET("/services", controller.HandleServices)
+	router.GET("/options", controller.HandleConfigList)
+	router.PATCH("/update", controller.HandleConfigUpdate)
 
 	router.Run("0.0.0.0:8080")
 

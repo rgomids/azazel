@@ -24,7 +24,7 @@ func init() {
 
 }
 
-func ServeGenerate(c *gin.Context) {
+func HandleGeneration(c *gin.Context) {
 	var msg models.Message
 	if err := c.BindJSON(&msg); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

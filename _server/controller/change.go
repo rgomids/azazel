@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ServePatch(c *gin.Context) {
+func HandleConfigUpdate(c *gin.Context) {
 	var configs models.Configs
 
 	if err := c.ShouldBind(&configs); err != nil {
